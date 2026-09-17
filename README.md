@@ -221,112 +221,109 @@ WARNINGS: 0
 RESULT: Bundle is fully CONFORMANT with OKF v0.2. No warnings.
 ```
 
-### 4.6 Visual Knowledge Graph & Relationship Architecture
+### 4.6 OKF Documentation Relationship Graph
 
-An OKF bundle is not merely a static file tree; it forms a **semantic knowledge graph** where concepts are connected via:
-1. **Progressive Disclosure Hierarchy (Dashed Gray Lines)**: Navigation paths from the root index through domain indexes to individual concept documents.
-2. **Semantic Cross-Links (Solid Cyan Lines)**: Direct contextual relationships between concepts across domains (e.g. services linking to playbooks, configurations linking to deployment).
-3. **Attestation Contracts (Dashed Rose Lines)**: Operational playbooks and attested computations bound to deterministic verification code.
-
-#### Visual Graph Rendering (SVG)
-
-![OKF v0.2 Knowledge Graph](okf_knowledge_graph.svg)
-
-> 💡 **Interactive Visualization Available**: You can browse the interactive force-directed graph with live concept inspection, zoom, pan, and type filtering by opening **[`viz.html`](viz.html)** or **[`okf_bundle/viz.html`](okf_bundle/viz.html)** in any browser.
-
-#### Comprehensive Concept Architecture Diagram
+The following single unified graph illustrates how the components of the Open Knowledge Format (OKF) documentation bundle relate to each other—combining **Progressive Disclosure Routing** (how agents navigate from the root index to target concepts) and **Semantic & Execution Relationships** (how concepts cross-reference, configure, and attest execution contracts):
 
 ```mermaid
 graph TD
   %% Styles
-  classDef root fill:#1e293b,stroke:#f8fafc,stroke-width:2px,color:#fff;
-  classDef index fill:#475569,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef playbook fill:#2563eb,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef service fill:#059669,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef config fill:#d97706,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef comp fill:#7c3aed,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef ref fill:#0891b2,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef attester fill:#e11d48,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
-  classDef log fill:#64748b,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef root fill:#0f172a,stroke:#38bdf8,stroke-width:2.5px,color:#38bdf8,font-weight:bold;
+  classDef index fill:#1e293b,stroke:#94a3b8,stroke-width:1.5px,color:#f8fafc;
+  classDef playbook fill:#1d4ed8,stroke:#93c5fd,stroke-width:1.5px,color:#fff;
+  classDef service fill:#047857,stroke:#6ee7b7,stroke-width:1.5px,color:#fff;
+  classDef config fill:#b45309,stroke:#fcd34d,stroke-width:1.5px,color:#fff;
+  classDef comp fill:#6d28d9,stroke:#c4b5fd,stroke-width:1.5px,color:#fff;
+  classDef ref fill:#0e7490,stroke:#67e8f9,stroke-width:1.5px,color:#fff;
+  classDef attester fill:#be123c,stroke:#fda4af,stroke-width:2px,color:#fff;
+  classDef log fill:#334155,stroke:#cbd5e1,stroke-width:1.5px,color:#fff;
 
-  %% Root & Audit
-  Root["index.md<br/>(Root Index v0.2)"]:::root
-  Log["log.md<br/>(Update History)"]:::log
-  Root -.-> Log
+  subgraph RootLayer ["1. Root Entrypoint & History"]
+    Root["index.md<br/><b>Root Progressive Index (v0.2)</b>"]:::root
+    Log["log.md<br/><b>Update Audit Log</b>"]:::log
+    Root -->|tracks chronological updates| Log
+  end
 
-  %% Category Indexes
-  IdxPlay["playbooks/index.md"]:::index
-  IdxServ["services/index.md"]:::index
-  IdxConf["configurations/index.md"]:::index
-  IdxComp["computations/index.md"]:::index
-  IdxRef["references/index.md"]:::index
+  subgraph Domains ["2. Progressive Disclosure Domains"]
+    D_Play["playbooks/index.md<br/><b>Playbooks Index</b>"]:::index
+    D_Serv["services/index.md<br/><b>Services Index</b>"]:::index
+    D_Conf["configurations/index.md<br/><b>Configurations Index</b>"]:::index
+    D_Comp["computations/index.md<br/><b>Computations Index</b>"]:::index
+    D_Ref["references/index.md<br/><b>References Index</b>"]:::index
+  end
 
-  Root -.->|Progressive Traversal| IdxPlay
-  Root -.->|Progressive Traversal| IdxServ
-  Root -.->|Progressive Traversal| IdxConf
-  Root -.->|Progressive Traversal| IdxComp
-  Root -.->|Progressive Traversal| IdxRef
+  Root -->|discloses| D_Play
+  Root -->|discloses| D_Serv
+  Root -->|discloses| D_Conf
+  Root -->|discloses| D_Comp
+  Root -->|discloses| D_Ref
 
-  %% Playbook Concepts
-  P_Mig["database_migrations.md<br/>(Alembic Migrations)"]:::playbook
-  P_Dev["local_development.md<br/>(Dev Workflows)"]:::playbook
-  P_Test["backend_testing.md<br/>(Pytest & Coverage)"]:::playbook
-  P_Dep["production_deployment.md<br/>(Traefik Deploy)"]:::playbook
+  subgraph PlaybooksGroup ["3. Operational Playbooks"]
+    P_Mig["database_migrations.md"]:::playbook
+    P_Dev["local_development.md"]:::playbook
+    P_Test["backend_testing.md"]:::playbook
+    P_Dep["production_deployment.md"]:::playbook
+  end
 
-  IdxPlay -.-> P_Mig
-  IdxPlay -.-> P_Dev
-  IdxPlay -.-> P_Test
-  IdxPlay -.-> P_Dep
+  D_Play -->|indexes| P_Mig
+  D_Play -->|indexes| P_Dev
+  D_Play -->|indexes| P_Test
+  D_Play -->|indexes| P_Dep
 
-  %% Service Concepts
-  S_Top["stack_topology.md<br/>(Ports & URLs)"]:::service
-  S_Api["backend_api.md<br/>(FastAPI Backend)"]:::service
-  S_Front["frontend_client.md<br/>(React & Static Build)"]:::service
+  subgraph ServicesGroup ["4. Architecture & Topology"]
+    S_Top["stack_topology.md"]:::service
+    S_Api["backend_api.md"]:::service
+    S_Front["frontend_client.md"]:::service
+  end
 
-  IdxServ -.-> S_Top
-  IdxServ -.-> S_Api
-  IdxServ -.-> S_Front
+  D_Serv -->|indexes| S_Top
+  D_Serv -->|indexes| S_Api
+  D_Serv -->|indexes| S_Front
 
-  %% Configuration Concepts
-  C_Env["environment_variables.md<br/>(Env Vars & Secrets)"]:::config
-  C_Files["docker_compose_files.md<br/>(Compose Layering)"]:::config
+  subgraph ConfigGroup ["5. Configuration & Manifests"]
+    C_Env["environment_variables.md"]:::config
+    C_Files["docker_compose_files.md"]:::config
+  end
 
-  IdxConf -.-> C_Env
-  IdxConf -.-> C_Files
+  D_Conf -->|indexes| C_Env
+  D_Conf -->|indexes| C_Files
 
-  %% Attested Computations
-  K_Test["run_backend_tests.md<br/>(Blessed Test Recipe)"]:::comp
-  K_Mig["apply_migrations.md<br/>(Blessed Migration Recipe)"]:::comp
+  subgraph ComputationsGroup ["6. Attested Computations"]
+    K_Mig["apply_migrations.md"]:::comp
+    K_Test["run_backend_tests.md"]:::comp
+  end
 
-  IdxComp -.-> K_Test
-  IdxComp -.-> K_Mig
+  D_Comp -->|indexes| K_Mig
+  D_Comp -->|indexes| K_Test
 
-  %% References & Attester
-  R_Stack["tech_stack.md<br/>(Stack Overview)"]:::ref
-  Att_Exit["exit_code_zero.py<br/>(Attester Script)"]:::attester
+  subgraph ReferencesGroup ["7. References & Attesters"]
+    R_Stack["tech_stack.md"]:::ref
+    Att["exit_code_zero.py<br/><b>Receipt Attester</b>"]:::attester
+  end
 
-  IdxRef -.-> R_Stack
-  IdxRef -.-> Att_Exit
+  D_Ref -->|indexes| R_Stack
+  D_Ref -->|indexes| Att
 
-  %% Cross-Domain Semantic Relationships
-  P_Mig ==>|Attestation link| K_Mig
-  P_Test ==>|Attestation link| K_Test
-  P_Dev ==>|Port resolution| S_Top
-  P_Dep ==>|Configuration dependencies| C_Files
-  P_Dep ==>|Secrets requirements| C_Env
+  %% Functional & Semantic Relationships Between Concepts
+  P_Mig ==>|executes blessed recipe| K_Mig
+  P_Test ==>|executes blessed recipe| K_Test
+  K_Mig -.->|verifies exit code| Att
+  K_Test -.->|verifies exit code| Att
 
-  S_Top ==>|Component detail| S_Api
-  S_Top ==>|Component detail| S_Front
-  S_Front ==>|Build mounting| S_Api
-  S_Api ==>|Migration workflow| P_Mig
-  S_Api ==>|Test execution| P_Test
+  P_Dev ==>|starts services in| S_Top
+  S_Top ==>|maps host ports for| S_Api
+  S_Top ==>|maps host ports for| S_Front
+  S_Front ==>|mounts production build into| S_Api
 
-  C_Files ==>|Production env vars| C_Env
-  R_Stack ==>|Topology reference| S_Top
-
-  K_Test -.->|Receipt verification| Att_Exit
-  K_Mig -.->|Receipt verification| Att_Exit
+  P_Dep ==>|applies manifest layering| C_Files
+  C_Files ==>|interpolates secrets & vars from| C_Env
+  R_Stack ==>|specifies tooling for| S_Top
 ```
+
+> **How to Read the Graph**:
+> - **Top-down thin arrows (`-->`)**: Represent **Progressive Disclosure Navigation** (`Root` &rarr; `Domain Index` &rarr; `Target Concept`), enabling agents to locate any topic in exactly 3 hops without scanning the entire repo.
+> - **Solid thick arrows (`==>`)**: Represent **Semantic Cross-Domain Relationships** (e.g. playbooks invoking configurations or services mounting into one another).
+> - **Dashed arrows (`-.->`)**: Represent **Attestation Contracts** connecting runnable computations directly to deterministic Python receipt validators.
 
 ---
 
