@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Knowledge Format (OKF) v0.2 Visual Graph</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #e2e8f0; overflow: hidden; height: 100vh; display: flex; }
+    #sidebar { width: 380px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 10; padding: 24px; box-shadow: 4px 0 24px rgba(0,0,0,0.3); overflow-y: auto; }
+    #graph-container { flex: 1; position: relative; height: 100%; }
+    svg { width: 100%; height: 100%; }
+    h1 { font-size: 20px; font-weight: 700; color: #38bdf8; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .badge { font-size: 11px; background: #0284c7; color: #fff; padding: 2px 8px; border-radius: 9999px; font-weight: 600; text-transform: uppercase; }
+    .subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 20px; line-height: 1.4; }
+    .legend { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 20px; }
+    .legend-title { font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
+    .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .panel { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-top: auto; }
+    .panel-title { font-size: 14px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+    .panel-type { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    .panel-desc { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px; }
+    .panel-meta { font-size: 11px; color: #64748b; border-top: 1px solid #1e293b; pt: 10px; }
+    .panel-meta div { margin-top: 4px; }
+    .panel-meta span { color: #94a3b8; font-weight: 600; }
+    .controls { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 8px; background: #1e293b; padding: 8px; border-radius: 8px; border: 1px solid #334155; }
+    .btn { background: #334155; border: none; color: #f8fafc; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .btn:hover { background: #475569; }
+    .node circle { stroke: #f8fafc; stroke-width: 1.5px; cursor: pointer; transition: all 0.2s; }
+    .node text { font-size: 11px; font-weight: 500; fill: #f8fafc; pointer-events: none; text-anchor: middle; }
+    .link { stroke-opacity: 0.6; }
+    .link.hierarchy { stroke: #475569; stroke-dasharray: 4,4; stroke-width: 1.5px; }
+    .link.semantic { stroke: #38bdf8; stroke-width: 2px; }
+    .link.attestation { stroke: #f43f5e; stroke-dasharray: 2,2; stroke-width: 2px; }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <h1>OKF Knowledge Graph <span class="badge">v0.2</span></h1>
+    <div class="subtitle">Interactive progressive disclosure and semantic relationship graph for the Full Stack FastAPI & React knowledge bundle.</div>
+    
+    <div class="legend">
+      <div class="legend-title">Concept Types</div>
+      <div class="legend-grid">
+        <div class="legend-item"><div class="legend-dot" style="background:#1e293b;border:1px solid #fff;"></div>Root Index</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#475569;"></div>Directory Index</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2563eb;"></div>Playbook</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#059669;"></div>Service</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#d97706;"></div>Configuration</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7c3aed;"></div>Attested Comp.</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0891b2;"></div>Reference</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e11d48;"></div>Attester</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-title">Edge Relationships</div>
+      <div style="font-size:12px;display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:20px;height:2px;border-top:2px dashed #64748b;display:inline-block;"></span> Progressive Disclosure</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:20px;height:2px;background:#38bdf8;display:inline-block;"></span> Semantic Cross-Link</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="width:20px;height:2px;border-top:2px dashed #f43f5e;display:inline-block;"></span> Attestation Contract</div>
+      </div>
+    </div>
+
+    <div id="inspector" class="panel">
+      <div id="ins-type" class="panel-type" style="background:#1e293b;">Click any node</div>
+      <div id="ins-title" class="panel-title">Explore OKF Concepts</div>
+      <div id="ins-desc" class="panel-desc">Click or hover over any node in the graph to inspect its frontmatter, trust tier, role, and progressive disclosure hierarchy.</div>
+      <div id="ins-meta" class="panel-meta">
+        <div><span>Concept ID:</span> <span id="ins-id" style="font-family:monospace;color:#38bdf8;">-</span></div>
+        <div><span>Status:</span> <span id="ins-status">-</span></div>
+        <div><span>Trust Tier:</span> <span id="ins-trust">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="graph-container">
+    <svg id="graph"></svg>
+    <div class="controls">
+      <button class="btn" id="btn-reset">Reset View</button>
+      <button class="btn" id="btn-fit">Fit Center</button>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      nodes: [{"id": "index.md", "label": "index", "type": "Root Index", "title": "Full Stack Knowledge Bundle (Root)", "description": "Structured, agent-ready knowledge bundle for the Full Stack FastAPI & React web application template.", "status": "stable", "trust": "human-reviewed"}, {"id": "log.md", "label": "log", "type": "Update Log", "title": "Bundle Update Log", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "services/backend_api.md", "label": "backend_api", "type": "Service", "title": "Backend API Service", "description": "Architecture and components of the FastAPI Python backend, SQLModel models, and Alembic migrations.", "status": "stable", "trust": "human-reviewed"}, {"id": "services/frontend_client.md", "label": "frontend_client", "type": "Service", "title": "Frontend Client Service", "description": "Architecture of the React Vite single-page application and its production integration with FastAPI.", "status": "stable", "trust": "human-reviewed"}, {"id": "services/index.md", "label": "index", "type": "Directory Index", "title": "Services Index", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "services/stack_topology.md", "label": "stack_topology", "type": "Service", "title": "Stack Topology & Port Mappings", "description": "Complete network architecture, exposed localhost ports, internal communication, and service endpoints across development and Docker Compose.", "status": "stable", "trust": "human-reviewed"}, {"id": "computations/apply_migrations.md", "label": "apply_migrations", "type": "Attested Computation", "title": "Apply Alembic Migrations Head", "description": "Blessed computation for running pending database migrations against PostgreSQL.", "status": "stable", "trust": "human-reviewed"}, {"id": "computations/index.md", "label": "index", "type": "Directory Index", "title": "Computations Index", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "computations/run_backend_tests.md", "label": "run_backend_tests", "type": "Attested Computation", "title": "Run Backend Test Suite", "description": "Blessed computation for executing backend pytest test suite with coverage report.", "status": "stable", "trust": "human-reviewed"}, {"id": "playbooks/backend_testing.md", "label": "backend_testing", "type": "Playbook", "title": "Backend Testing & Coverage Execution", "description": "Commands and procedures for running backend pytest suites with coverage reporting locally and in Docker Compose.", "status": "stable", "trust": "human-reviewed"}, {"id": "playbooks/database_migrations.md", "label": "database_migrations", "type": "Playbook", "title": "Database Migrations with Alembic", "description": "Step-by-step instructions and commands for generating and applying database migrations using Alembic and SQLModel.", "status": "stable", "trust": "human-reviewed"}, {"id": "playbooks/index.md", "label": "index", "type": "Directory Index", "title": "Playbooks Index", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "playbooks/local_development.md", "label": "local_development", "type": "Playbook", "title": "Local Development Setup & Execution", "description": "Instructions for starting backing services, FastAPI server, Vite dev server, and running with Docker Compose.", "status": "stable", "trust": "human-reviewed"}, {"id": "playbooks/production_deployment.md", "label": "production_deployment", "type": "Playbook", "title": "Production Deployment with Docker Compose & Traefik", "description": "Step-by-step procedure for building and deploying the full stack to production with Traefik TLS and Let's Encrypt.", "status": "stable", "trust": "human-reviewed"}, {"id": "configurations/docker_compose_files.md", "label": "docker_compose_files", "type": "Configuration", "title": "Docker Compose Files & Inheritance", "description": "Architecture of compose.yml, compose.override.yml, and compose.deploy.yml configurations.", "status": "stable", "trust": "human-reviewed"}, {"id": "configurations/environment_variables.md", "label": "environment_variables", "type": "Configuration", "title": "Environment Variables & Secrets Reference", "description": "Complete listing of environment variables for local development, docker compose orchestration, and production TLS deployment.", "status": "stable", "trust": "human-reviewed"}, {"id": "configurations/index.md", "label": "index", "type": "Directory Index", "title": "Configurations Index", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "references/index.md", "label": "index", "type": "Directory Index", "title": "References Index", "description": "", "status": "stable", "trust": "human-reviewed"}, {"id": "references/tech_stack.md", "label": "tech_stack", "type": "Reference", "title": "Technology Stack & Core Tools", "description": "Overview of core technologies, runtimes, package managers, and libraries used across the full-stack template.", "status": "stable", "trust": "human-reviewed"}, {"id": "references/attesters/exit_code_zero.py", "label": "exit_code_zero.py", "type": "Attester", "title": "Exit Code Zero Attester", "description": "Deterministic Python receipt validator", "status": "stable", "trust": "deterministic"}],
+      links: [{"source": "index.md", "target": "playbooks/index.md", "label": "Playbooks", "kind": "hierarchy"}, {"source": "index.md", "target": "services/index.md", "label": "Services", "kind": "hierarchy"}, {"source": "index.md", "target": "configurations/index.md", "label": "Configurations", "kind": "hierarchy"}, {"source": "index.md", "target": "computations/index.md", "label": "Computations", "kind": "hierarchy"}, {"source": "index.md", "target": "references/index.md", "label": "References", "kind": "hierarchy"}, {"source": "services/backend_api.md", "target": "playbooks/database_migrations.md", "label": "/playbooks/database_migrations.md", "kind": "semantic"}, {"source": "services/backend_api.md", "target": "playbooks/backend_testing.md", "label": "/playbooks/backend_testing.md", "kind": "semantic"}, {"source": "services/frontend_client.md", "target": "services/stack_topology.md", "label": "/services/stack_topology.md", "kind": "semantic"}, {"source": "services/frontend_client.md", "target": "playbooks/local_development.md", "label": "/playbooks/local_development.md", "kind": "semantic"}, {"source": "services/index.md", "target": "services/stack_topology.md", "label": "Stack Topology & Port Mappings", "kind": "hierarchy"}, {"source": "services/index.md", "target": "services/backend_api.md", "label": "Backend API Service", "kind": "hierarchy"}, {"source": "services/index.md", "target": "services/frontend_client.md", "label": "Frontend Client Service", "kind": "hierarchy"}, {"source": "services/stack_topology.md", "target": "services/backend_api.md", "label": "/services/backend_api.md", "kind": "semantic"}, {"source": "services/stack_topology.md", "target": "services/frontend_client.md", "label": "/services/frontend_client.md", "kind": "semantic"}, {"source": "computations/apply_migrations.md", "target": "references/attesters/exit_code_zero.py", "label": "attested_by", "kind": "attestation"}, {"source": "computations/index.md", "target": "computations/run_backend_tests.md", "label": "Run Backend Test Suite", "kind": "hierarchy"}, {"source": "computations/index.md", "target": "computations/apply_migrations.md", "label": "Apply Alembic Migrations Head", "kind": "hierarchy"}, {"source": "computations/run_backend_tests.md", "target": "references/attesters/exit_code_zero.py", "label": "attested_by", "kind": "attestation"}, {"source": "playbooks/backend_testing.md", "target": "computations/run_backend_tests.md", "label": "/computations/run_backend_tests.md", "kind": "semantic"}, {"source": "playbooks/database_migrations.md", "target": "computations/apply_migrations.md", "label": "/computations/apply_migrations.md", "kind": "semantic"}, {"source": "playbooks/index.md", "target": "playbooks/database_migrations.md", "label": "Database Migrations", "kind": "hierarchy"}, {"source": "playbooks/index.md", "target": "playbooks/local_development.md", "label": "Local Development", "kind": "hierarchy"}, {"source": "playbooks/index.md", "target": "playbooks/backend_testing.md", "label": "Backend Testing", "kind": "hierarchy"}, {"source": "playbooks/index.md", "target": "playbooks/production_deployment.md", "label": "Production Deployment", "kind": "hierarchy"}, {"source": "playbooks/local_development.md", "target": "services/stack_topology.md", "label": "/services/stack_topology.md", "kind": "semantic"}, {"source": "playbooks/production_deployment.md", "target": "configurations/docker_compose_files.md", "label": "/configurations/docker_compose_files.md", "kind": "semantic"}, {"source": "playbooks/production_deployment.md", "target": "configurations/environment_variables.md", "label": "/configurations/environment_variables.md", "kind": "semantic"}, {"source": "configurations/docker_compose_files.md", "target": "playbooks/production_deployment.md", "label": "/playbooks/production_deployment.md", "kind": "semantic"}, {"source": "configurations/docker_compose_files.md", "target": "configurations/environment_variables.md", "label": "/configurations/environment_variables.md", "kind": "semantic"}, {"source": "configurations/environment_variables.md", "target": "configurations/docker_compose_files.md", "label": "/configurations/docker_compose_files.md", "kind": "semantic"}, {"source": "configurations/environment_variables.md", "target": "playbooks/production_deployment.md", "label": "/playbooks/production_deployment.md", "kind": "semantic"}, {"source": "configurations/index.md", "target": "configurations/environment_variables.md", "label": "Environment Variables & Secrets Reference", "kind": "hierarchy"}, {"source": "configurations/index.md", "target": "configurations/docker_compose_files.md", "label": "Docker Compose Files & Inheritance", "kind": "hierarchy"}, {"source": "references/index.md", "target": "references/tech_stack.md", "label": "Technology Stack", "kind": "hierarchy"}, {"source": "references/tech_stack.md", "target": "services/stack_topology.md", "label": "/services/stack_topology.md", "kind": "semantic"}, {"source": "references/tech_stack.md", "target": "configurations/environment_variables.md", "label": "/configurations/environment_variables.md", "kind": "semantic"}]
+    };
+
+    const colors = {"Root Index": "#1e293b", "Directory Index": "#475569", "Playbook": "#2563eb", "Service": "#059669", "Configuration": "#d97706", "Attested Computation": "#7c3aed", "Reference": "#0891b2", "Attester": "#e11d48", "Update Log": "#64748b"};
+
+    const width = document.getElementById("graph-container").clientWidth;
+    const height = document.getElementById("graph-container").clientHeight;
+
+    const svg = d3.select("#graph")
+      .attr("viewBox", [0, 0, width, height]);
+
+    const g = svg.append("g");
+
+    const zoom = d3.zoom()
+      .scaleExtent([0.2, 4])
+      .on("zoom", (event) => g.attr("transform", event.transform));
+
+    svg.call(zoom);
+
+    // Arrow markers
+    const defs = svg.append("defs");
+    ["semantic", "attestation"].forEach(kind => {
+      defs.append("marker")
+        .attr("id", `arrow-${kind}`)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 22)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("fill", kind === "attestation" ? "#f43f5e" : "#38bdf8")
+        .attr("d", "M0,-5L10,0L0,5");
+    });
+
+    const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id).distance(d => d.kind === "hierarchy" ? 80 : 130))
+      .force("charge", d3.forceManyBody().strength(-350))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide().radius(40));
+
+    const link = g.append("g")
+      .selectAll("line")
+      .data(data.links)
+      .join("line")
+      .attr("class", d => `link ${d.kind}`)
+      .attr("marker-end", d => d.kind !== "hierarchy" ? `url(#arrow-${d.kind})` : null);
+
+    const node = g.append("g")
+      .selectAll(".node")
+      .data(data.nodes)
+      .join("g")
+      .attr("class", "node")
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+    node.append("circle")
+      .attr("r", d => d.type === "Root Index" ? 18 : (d.type.includes("Index") ? 14 : 11))
+      .attr("fill", d => colors[d.type] || "#64748b");
+
+    node.append("text")
+      .attr("dy", 22)
+      .text(d => d.label);
+
+    node.on("click", (event, d) => {
+      document.getElementById("ins-type").textContent = d.type;
+      document.getElementById("ins-type").style.background = colors[d.type] || "#334155";
+      document.getElementById("ins-title").textContent = d.title;
+      document.getElementById("ins-desc").textContent = d.description || "Progressive disclosure concept document.";
+      document.getElementById("ins-id").textContent = d.id;
+      document.getElementById("ins-status").textContent = d.status;
+      document.getElementById("ins-trust").textContent = d.trust;
+      
+      // Highlight node
+      node.selectAll("circle").attr("stroke-width", n => n.id === d.id ? 4 : 1.5);
+    });
+
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      node
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    document.getElementById("btn-reset").onclick = () => {
+      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    };
+
+    document.getElementById("btn-fit").onclick = () => {
+      svg.transition().duration(750).call(zoom.scaleTo, 0.85);
+    };
+  </script>
+</body>
+</html>

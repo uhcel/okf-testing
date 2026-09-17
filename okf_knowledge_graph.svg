@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 780" width="100%" height="100%" style="background:#0f172a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">
+<defs>
+  <marker id="arrow" viewBox="0 -5 10 10" refX="18" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+    <path fill="#38bdf8" d="M0,-5L10,0L0,5" />
+  </marker>
+  <marker id="arrow-att" viewBox="0 -5 10 10" refX="18" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+    <path fill="#f43f5e" d="M0,-5L10,0L0,5" />
+  </marker>
+  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+  </filter>
+</defs>
+<!-- Title & Legend -->
+<text x="40" y="45" fill="#38bdf8" font-size="22" font-weight="700">Google OKF v0.2 Knowledge Architecture &amp; Progressive Disclosure Graph</text>
+<text x="40" y="70" fill="#94a3b8" font-size="13">Hierarchy edges (dashed) show O(1) progressive traversal; colored edges (solid) represent cross-domain semantic links.</text>
+<line x1="550" y1="80" x2="200" y2="220" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="550" y1="80" x2="450" y2="220" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="550" y1="80" x2="700" y2="220" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="550" y1="80" x2="920" y2="220" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="550" y1="80" x2="320" y2="480" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="450" y1="430" x2="120" y2="340" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="450" y1="430" x2="120" y2="500" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="450" y1="520" x2="450" y2="340" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="450" y1="520" x2="120" y2="420" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="450" y1="220" x2="450" y2="340" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="450" y1="220" x2="450" y2="430" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="450" y1="220" x2="450" y2="520" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="450" y1="340" x2="450" y2="430" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="450" y1="340" x2="450" y2="520" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="940" y1="470" x2="940" y2="600" stroke="#f43f5e" stroke-width="2" stroke-opacity="0.65" stroke-dasharray="2,2" marker-end="url(#arrow-att)" />
+<line x1="920" y1="220" x2="940" y2="360" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="920" y1="220" x2="940" y2="470" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="940" y1="360" x2="940" y2="600" stroke="#f43f5e" stroke-width="2" stroke-opacity="0.65" stroke-dasharray="2,2" marker-end="url(#arrow-att)" />
+<line x1="120" y1="500" x2="940" y2="360" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="120" y1="340" x2="940" y2="470" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="200" y1="220" x2="120" y2="340" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="200" y1="220" x2="120" y2="420" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="200" y1="220" x2="120" y2="500" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="200" y1="220" x2="120" y2="580" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="120" y1="420" x2="450" y2="340" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="120" y1="580" x2="700" y2="470" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="120" y1="580" x2="700" y2="360" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="700" y1="470" x2="120" y2="580" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="700" y1="470" x2="700" y2="360" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="700" y1="360" x2="700" y2="470" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="700" y1="360" x2="120" y2="580" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="700" y1="220" x2="700" y2="360" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="700" y1="220" x2="700" y2="470" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="320" y1="480" x2="320" y2="600" stroke="#475569" stroke-width="1.5" stroke-opacity="0.65" stroke-dasharray="4,4"  />
+<line x1="320" y1="600" x2="450" y2="340" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<line x1="320" y1="600" x2="700" y2="360" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.65"  marker-end="url(#arrow)" />
+<g filter="url(#glow)" transform="translate(550,80)">
+  <circle r="18" fill="#1e293b" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(950,80)">
+  <circle r="11" fill="#64748b" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">log</text>
+</g>
+<g filter="url(#glow)" transform="translate(450,430)">
+  <circle r="11" fill="#059669" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">backend_api</text>
+</g>
+<g filter="url(#glow)" transform="translate(450,520)">
+  <circle r="11" fill="#059669" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">frontend_client</text>
+</g>
+<g filter="url(#glow)" transform="translate(450,220)">
+  <circle r="14" fill="#475569" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(450,340)">
+  <circle r="11" fill="#059669" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">stack_topology</text>
+</g>
+<g filter="url(#glow)" transform="translate(940,470)">
+  <circle r="11" fill="#7c3aed" stroke="#f8fafc" stroke-width="2"/>
+  <text x="18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="start">apply_migrations</text>
+</g>
+<g filter="url(#glow)" transform="translate(920,220)">
+  <circle r="14" fill="#475569" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(940,360)">
+  <circle r="11" fill="#7c3aed" stroke="#f8fafc" stroke-width="2"/>
+  <text x="-18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">run_backend_tests</text>
+</g>
+<g filter="url(#glow)" transform="translate(120,500)">
+  <circle r="11" fill="#2563eb" stroke="#f8fafc" stroke-width="2"/>
+  <text x="-18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">backend_testing</text>
+</g>
+<g filter="url(#glow)" transform="translate(120,340)">
+  <circle r="11" fill="#2563eb" stroke="#f8fafc" stroke-width="2"/>
+  <text x="-18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">database_migrations</text>
+</g>
+<g filter="url(#glow)" transform="translate(200,220)">
+  <circle r="14" fill="#475569" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(120,420)">
+  <circle r="11" fill="#2563eb" stroke="#f8fafc" stroke-width="2"/>
+  <text x="-18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">local_development</text>
+</g>
+<g filter="url(#glow)" transform="translate(120,580)">
+  <circle r="11" fill="#2563eb" stroke="#f8fafc" stroke-width="2"/>
+  <text x="-18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">production_deployment</text>
+</g>
+<g filter="url(#glow)" transform="translate(700,470)">
+  <circle r="11" fill="#d97706" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">docker_compose_files</text>
+</g>
+<g filter="url(#glow)" transform="translate(700,360)">
+  <circle r="11" fill="#d97706" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">environment_variables</text>
+</g>
+<g filter="url(#glow)" transform="translate(700,220)">
+  <circle r="14" fill="#475569" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(320,480)">
+  <circle r="14" fill="#475569" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="-24" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">index</text>
+</g>
+<g filter="url(#glow)" transform="translate(320,600)">
+  <circle r="11" fill="#0891b2" stroke="#f8fafc" stroke-width="2"/>
+  <text x="0" y="26" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">tech_stack</text>
+</g>
+<g filter="url(#glow)" transform="translate(940,600)">
+  <circle r="11" fill="#e11d48" stroke="#f8fafc" stroke-width="2"/>
+  <text x="18" y="4" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="start">exit_code_zero.py</text>
+</g>
+<g transform="translate(40, 680)">
+  <rect width="1020" height="70" rx="8" fill="#1e293b" stroke="#334155" />
+  <text x="20" y="24" fill="#94a3b8" font-size="11" font-weight="700" text-transform="uppercase">LEGEND</text>
+  <circle cx="120" cy="20" r="5" fill="#1e293b" stroke="#fff" stroke-width="1" />
+  <text x="132" y="24" fill="#e2e8f0" font-size="11">Root Index</text>
+  <circle cx="230" cy="20" r="5" fill="#475569" stroke="#fff" stroke-width="1" />
+  <text x="242" y="24" fill="#e2e8f0" font-size="11">Directory Index</text>
+  <circle cx="370" cy="20" r="5" fill="#2563eb" stroke="#fff" stroke-width="1" />
+  <text x="382" y="24" fill="#e2e8f0" font-size="11">Playbook</text>
+  <circle cx="480" cy="20" r="5" fill="#059669" stroke="#fff" stroke-width="1" />
+  <text x="492" y="24" fill="#e2e8f0" font-size="11">Service</text>
+  <circle cx="580" cy="20" r="5" fill="#d97706" stroke="#fff" stroke-width="1" />
+  <text x="592" y="24" fill="#e2e8f0" font-size="11">Configuration</text>
+  <circle cx="710" cy="20" r="5" fill="#7c3aed" stroke="#fff" stroke-width="1" />
+  <text x="722" y="24" fill="#e2e8f0" font-size="11">Attested Computation</text>
+  <circle cx="890" cy="20" r="5" fill="#0891b2" stroke="#fff" stroke-width="1" />
+  <text x="902" y="24" fill="#e2e8f0" font-size="11">Reference</text>
+  <line x1="120" y1="48" x2="144" y2="48" stroke="#64748b" stroke-width="2.5" />
+  <text x="152" y="52" fill="#e2e8f0" font-size="11">Progressive Traversal (Dashed)</text>
+  <line x1="380" y1="48" x2="404" y2="48" stroke="#38bdf8" stroke-width="2.5" />
+  <text x="412" y="52" fill="#e2e8f0" font-size="11">Semantic Cross-Link (Solid Blue)</text>
+  <line x1="680" y1="48" x2="704" y2="48" stroke="#f43f5e" stroke-width="2.5" />
+  <text x="712" y="52" fill="#e2e8f0" font-size="11">Attestation Link (Dashed Rose)</text>
+</g>
+</svg>

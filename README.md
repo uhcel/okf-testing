@@ -221,6 +221,113 @@ WARNINGS: 0
 RESULT: Bundle is fully CONFORMANT with OKF v0.2. No warnings.
 ```
 
+### 4.6 Visual Knowledge Graph & Relationship Architecture
+
+An OKF bundle is not merely a static file tree; it forms a **semantic knowledge graph** where concepts are connected via:
+1. **Progressive Disclosure Hierarchy (Dashed Gray Lines)**: Navigation paths from the root index through domain indexes to individual concept documents.
+2. **Semantic Cross-Links (Solid Cyan Lines)**: Direct contextual relationships between concepts across domains (e.g. services linking to playbooks, configurations linking to deployment).
+3. **Attestation Contracts (Dashed Rose Lines)**: Operational playbooks and attested computations bound to deterministic verification code.
+
+#### Visual Graph Rendering (SVG)
+
+![OKF v0.2 Knowledge Graph](okf_knowledge_graph.svg)
+
+> 💡 **Interactive Visualization Available**: You can browse the interactive force-directed graph with live concept inspection, zoom, pan, and type filtering by opening **[`viz.html`](viz.html)** or **[`okf_bundle/viz.html`](okf_bundle/viz.html)** in any browser.
+
+#### Comprehensive Concept Architecture Diagram
+
+```mermaid
+graph TD
+  %% Styles
+  classDef root fill:#1e293b,stroke:#f8fafc,stroke-width:2px,color:#fff;
+  classDef index fill:#475569,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef playbook fill:#2563eb,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef service fill:#059669,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef config fill:#d97706,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef comp fill:#7c3aed,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef ref fill:#0891b2,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef attester fill:#e11d48,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+  classDef log fill:#64748b,stroke:#f8fafc,stroke-width:1.5px,color:#fff;
+
+  %% Root & Audit
+  Root["index.md<br/>(Root Index v0.2)"]:::root
+  Log["log.md<br/>(Update History)"]:::log
+  Root -.-> Log
+
+  %% Category Indexes
+  IdxPlay["playbooks/index.md"]:::index
+  IdxServ["services/index.md"]:::index
+  IdxConf["configurations/index.md"]:::index
+  IdxComp["computations/index.md"]:::index
+  IdxRef["references/index.md"]:::index
+
+  Root -.->|Progressive Traversal| IdxPlay
+  Root -.->|Progressive Traversal| IdxServ
+  Root -.->|Progressive Traversal| IdxConf
+  Root -.->|Progressive Traversal| IdxComp
+  Root -.->|Progressive Traversal| IdxRef
+
+  %% Playbook Concepts
+  P_Mig["database_migrations.md<br/>(Alembic Migrations)"]:::playbook
+  P_Dev["local_development.md<br/>(Dev Workflows)"]:::playbook
+  P_Test["backend_testing.md<br/>(Pytest & Coverage)"]:::playbook
+  P_Dep["production_deployment.md<br/>(Traefik Deploy)"]:::playbook
+
+  IdxPlay -.-> P_Mig
+  IdxPlay -.-> P_Dev
+  IdxPlay -.-> P_Test
+  IdxPlay -.-> P_Dep
+
+  %% Service Concepts
+  S_Top["stack_topology.md<br/>(Ports & URLs)"]:::service
+  S_Api["backend_api.md<br/>(FastAPI Backend)"]:::service
+  S_Front["frontend_client.md<br/>(React & Static Build)"]:::service
+
+  IdxServ -.-> S_Top
+  IdxServ -.-> S_Api
+  IdxServ -.-> S_Front
+
+  %% Configuration Concepts
+  C_Env["environment_variables.md<br/>(Env Vars & Secrets)"]:::config
+  C_Files["docker_compose_files.md<br/>(Compose Layering)"]:::config
+
+  IdxConf -.-> C_Env
+  IdxConf -.-> C_Files
+
+  %% Attested Computations
+  K_Test["run_backend_tests.md<br/>(Blessed Test Recipe)"]:::comp
+  K_Mig["apply_migrations.md<br/>(Blessed Migration Recipe)"]:::comp
+
+  IdxComp -.-> K_Test
+  IdxComp -.-> K_Mig
+
+  %% References & Attester
+  R_Stack["tech_stack.md<br/>(Stack Overview)"]:::ref
+  Att_Exit["exit_code_zero.py<br/>(Attester Script)"]:::attester
+
+  IdxRef -.-> R_Stack
+  IdxRef -.-> Att_Exit
+
+  %% Cross-Domain Semantic Relationships
+  P_Mig ==>|Attestation link| K_Mig
+  P_Test ==>|Attestation link| K_Test
+  P_Dev ==>|Port resolution| S_Top
+  P_Dep ==>|Configuration dependencies| C_Files
+  P_Dep ==>|Secrets requirements| C_Env
+
+  S_Top ==>|Component detail| S_Api
+  S_Top ==>|Component detail| S_Front
+  S_Front ==>|Build mounting| S_Api
+  S_Api ==>|Migration workflow| P_Mig
+  S_Api ==>|Test execution| P_Test
+
+  C_Files ==>|Production env vars| C_Env
+  R_Stack ==>|Topology reference| S_Top
+
+  K_Test -.->|Receipt verification| Att_Exit
+  K_Mig -.->|Receipt verification| Att_Exit
+```
+
 ---
 
 ## 5. Testing Process & Detailed Results
