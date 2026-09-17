@@ -223,107 +223,87 @@ RESULT: Bundle is fully CONFORMANT with OKF v0.2. No warnings.
 
 ### 4.6 OKF Documentation Relationship Graph
 
-The following single unified graph illustrates how the components of the Open Knowledge Format (OKF) documentation bundle relate to each other—combining **Progressive Disclosure Routing** (how agents navigate from the root index to target concepts) and **Semantic & Execution Relationships** (how concepts cross-reference, configure, and attest execution contracts):
+The relationship graph below illustrates how the Open Knowledge Format (OKF) documentation bundle works across **4 distinct layers**:
+1. **Layer 1 (Entrypoint)**: `index.md` provides global catalog discovery.
+2. **Layer 2 (Domain Routing)**: Domain indices route agents directly to relevant operational areas.
+3. **Layer 3 (Atomic Concepts)**: Self-contained, single-responsibility concept files with ground-truth facts.
+4. **Layer 4 (Deterministic Verification)**: Attestation receipts verified by Python validators (`exit_code_zero.py`).
+
+![OKF v0.2 Knowledge Graph](okf_knowledge_graph.svg)
 
 ```mermaid
-graph TD
+flowchart LR
   %% Styles
-  classDef root fill:#0f172a,stroke:#38bdf8,stroke-width:2.5px,color:#38bdf8,font-weight:bold;
-  classDef index fill:#1e293b,stroke:#94a3b8,stroke-width:1.5px,color:#f8fafc;
-  classDef playbook fill:#1d4ed8,stroke:#93c5fd,stroke-width:1.5px,color:#fff;
-  classDef service fill:#047857,stroke:#6ee7b7,stroke-width:1.5px,color:#fff;
-  classDef config fill:#b45309,stroke:#fcd34d,stroke-width:1.5px,color:#fff;
-  classDef comp fill:#6d28d9,stroke:#c4b5fd,stroke-width:1.5px,color:#fff;
-  classDef ref fill:#0e7490,stroke:#67e8f9,stroke-width:1.5px,color:#fff;
-  classDef attester fill:#be123c,stroke:#fda4af,stroke-width:2px,color:#fff;
-  classDef log fill:#334155,stroke:#cbd5e1,stroke-width:1.5px,color:#fff;
+  classDef root fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#38bdf8;
+  classDef domain fill:#1e293b,stroke:#94a3b8,stroke-width:1.5px,color:#f8fafc;
+  classDef playbook fill:#1e3a8a,stroke:#60a5fa,stroke-width:1.2px,color:#fff;
+  classDef service fill:#064e3b,stroke:#34d399,stroke-width:1.2px,color:#fff;
+  classDef config fill:#78350f,stroke:#fbbf24,stroke-width:1.2px,color:#fff;
+  classDef comp fill:#581c87,stroke:#c084fc,stroke-width:1.2px,color:#fff;
+  classDef ref fill:#164e63,stroke:#22d3ee,stroke-width:1.2px,color:#fff;
+  classDef attester fill:#881337,stroke:#fda4af,stroke-width:2px,color:#fff;
 
-  subgraph RootLayer ["1. Root Entrypoint & History"]
-    Root["index.md<br/><b>Root Progressive Index (v0.2)</b>"]:::root
-    Log["log.md<br/><b>Update Audit Log</b>"]:::log
-    Root -->|tracks chronological updates| Log
+  subgraph L1 ["Layer 1: Entry"]
+    Root["<b>okf_bundle/index.md</b><br/>Root Catalog"]:::root
   end
 
-  subgraph Domains ["2. Progressive Disclosure Domains"]
-    D_Play["playbooks/index.md<br/><b>Playbooks Index</b>"]:::index
-    D_Serv["services/index.md<br/><b>Services Index</b>"]:::index
-    D_Conf["configurations/index.md<br/><b>Configurations Index</b>"]:::index
-    D_Comp["computations/index.md<br/><b>Computations Index</b>"]:::index
-    D_Ref["references/index.md<br/><b>References Index</b>"]:::index
+  subgraph L2 ["Layer 2: Domain Routing"]
+    D_Play["<b>playbooks/</b><br/>Workflows"]:::domain
+    D_Serv["<b>services/</b><br/>Architecture"]:::domain
+    D_Conf["<b>configurations/</b><br/>Manifests & Env"]:::domain
+    D_Comp["<b>computations/</b><br/>Runnable Recipes"]:::domain
+    D_Ref["<b>references/</b><br/>Tech Stack"]:::domain
   end
 
-  Root -->|discloses| D_Play
-  Root -->|discloses| D_Serv
-  Root -->|discloses| D_Conf
-  Root -->|discloses| D_Comp
-  Root -->|discloses| D_Ref
-
-  subgraph PlaybooksGroup ["3. Operational Playbooks"]
+  subgraph L3 ["Layer 3: Atomic Concepts"]
     P_Mig["database_migrations.md"]:::playbook
     P_Dev["local_development.md"]:::playbook
     P_Test["backend_testing.md"]:::playbook
     P_Dep["production_deployment.md"]:::playbook
-  end
 
-  D_Play -->|indexes| P_Mig
-  D_Play -->|indexes| P_Dev
-  D_Play -->|indexes| P_Test
-  D_Play -->|indexes| P_Dep
-
-  subgraph ServicesGroup ["4. Architecture & Topology"]
     S_Top["stack_topology.md"]:::service
     S_Api["backend_api.md"]:::service
     S_Front["frontend_client.md"]:::service
-  end
 
-  D_Serv -->|indexes| S_Top
-  D_Serv -->|indexes| S_Api
-  D_Serv -->|indexes| S_Front
-
-  subgraph ConfigGroup ["5. Configuration & Manifests"]
-    C_Env["environment_variables.md"]:::config
     C_Files["docker_compose_files.md"]:::config
-  end
+    C_Env["environment_variables.md"]:::config
 
-  D_Conf -->|indexes| C_Env
-  D_Conf -->|indexes| C_Files
-
-  subgraph ComputationsGroup ["6. Attested Computations"]
     K_Mig["apply_migrations.md"]:::comp
     K_Test["run_backend_tests.md"]:::comp
-  end
 
-  D_Comp -->|indexes| K_Mig
-  D_Comp -->|indexes| K_Test
-
-  subgraph ReferencesGroup ["7. References & Attesters"]
     R_Stack["tech_stack.md"]:::ref
-    Att["exit_code_zero.py<br/><b>Receipt Attester</b>"]:::attester
   end
 
-  D_Ref -->|indexes| R_Stack
-  D_Ref -->|indexes| Att
+  subgraph L4 ["Layer 4: Verification"]
+    Att["<b>exit_code_zero.py</b><br/>Receipt Attester"]:::attester
+  end
 
-  %% Functional & Semantic Relationships Between Concepts
-  P_Mig ==>|executes blessed recipe| K_Mig
-  P_Test ==>|executes blessed recipe| K_Test
-  K_Mig -.->|verifies exit code| Att
-  K_Test -.->|verifies exit code| Att
+  %% Progressive Disclosure Routing (Hop 1 & Hop 2)
+  Root --> D_Play & D_Serv & D_Conf & D_Comp & D_Ref
 
-  P_Dev ==>|starts services in| S_Top
-  S_Top ==>|maps host ports for| S_Api
-  S_Top ==>|maps host ports for| S_Front
-  S_Front ==>|mounts production build into| S_Api
+  D_Play --> P_Mig & P_Dev & P_Test & P_Dep
+  D_Serv --> S_Top & S_Api & S_Front
+  D_Conf --> C_Files & C_Env
+  D_Comp --> K_Mig & K_Test
+  D_Ref --> R_Stack
 
-  P_Dep ==>|applies manifest layering| C_Files
-  C_Files ==>|interpolates secrets & vars from| C_Env
-  R_Stack ==>|specifies tooling for| S_Top
+  %% Concept Execution & Cross-Domain Links
+  P_Mig -.->|triggers| K_Mig
+  P_Test -.->|triggers| K_Test
+  K_Mig & K_Test ==>|attested by| Att
+
+  P_Dev -.->|starts| S_Top
+  S_Top -.->|exposes| S_Api & S_Front
+
+  P_Dep -.->|configures| C_Files
+  C_Files -.->|interpolates| C_Env
 ```
 
-> **How to Read the Graph**:
-> - **Top-down thin arrows (`-->`)**: Represent **Progressive Disclosure Navigation** (`Root` &rarr; `Domain Index` &rarr; `Target Concept`), enabling agents to locate any topic in exactly 3 hops without scanning the entire repo.
-> - **Solid thick arrows (`==>`)**: Represent **Semantic Cross-Domain Relationships** (e.g. playbooks invoking configurations or services mounting into one another).
-> - **Dashed arrows (`-.->`)**: Represent **Attestation Contracts** connecting runnable computations directly to deterministic Python receipt validators.
+> **Legend**:
+> - **Thin solid lines (`-->`)**: **Progressive Disclosure Traversal** (`Root` &rarr; `Domain` &rarr; `Concept`). Enables $O(1)$ discovery in exactly 3 hops.
+> - **Dotted lines (`-.->`)**: **Semantic & Execution Links** (e.g., playbooks calling attested computations, configs feeding deployments).
+> - **Thick double lines (`==>`)**: **Attestation Contract** validating recipe execution receipts against deterministic validators.
+> - **Interactive Explorer**: Open [`viz.html`](file:///usr/local/google/home/leszekw/MyCoding/okf_testing/viz.html) in your browser to interactively drag nodes and view frontmatter metadata.
 
 ---
 
