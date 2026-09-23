@@ -1,0 +1,55 @@
+suite_name: okf_documentation_generation
+timeout_seconds: 300
+max_tool_calls: 20
+
+cases:
+  - name: bootstrap_okf_bundle
+    prompt: "I have documentation for our team's BigQuery tables and metric calculations. Can you help me convert this into an OKF v0.2 knowledge bundle?"
+    skills: [okf_documentation_generation]
+    rubric: |
+      The agent must:
+      - Identify OKF v0.2 bundle structure (concept markdown files, index.md, log.md)
+      - Propose the concept decomposition and directory layout before generating all files
+      - Follow the pilot workflow step (generate first file for user alignment)
+      - Use proper YAML frontmatter with required `type` field
+    expect_keywords:
+      - "OKF"
+      - "index.md"
+      - "log.md"
+
+  - name: attested_computation_concept
+    prompt: "I need to define a blessed fiscal revenue SQL calculation for BigQuery in our knowledge base so agents can attest and execute it safely."
+    skills: [okf_documentation_generation]
+    rubric: |
+      The agent must:
+      - Use `type: Attested Computation` in frontmatter
+      - Include `runtime: bigquery`
+      - Specify `parameters`, `executor`, and `attester` contracts
+    expect_keywords:
+      - "Attested Computation"
+      - "runtime"
+      - "executor"
+      - "attester"
+
+  - name: validate_bundle_conformance
+    prompt: "I just finished writing an OKF v0.2 knowledge bundle in `./my_bundle`. How can I validate that it complies with the spec?"
+    skills: [okf_documentation_generation]
+    rubric: |
+      The agent must:
+      - Instruct running `python3 scripts/validate_okf.py ./my_bundle`
+      - Explain what errors and warnings it checks (conformance vs soft guidance)
+    expect_keywords:
+      - "validate_okf.py"
+
+  - name: migrate_v01_bundle
+    prompt: "I have an existing OKF v0.1 bundle with legacy timestamp frontmatter and body Citations sections. How do I migrate it to OKF v0.2?"
+    skills: [okf_documentation_generation]
+    rubric: |
+      The agent must:
+      - Upgrade `timestamp` to `generated: { by: <actor>, at: <ISO-8601> }`
+      - Move body Citations into frontmatter `sources:` and markdown `[^source-id]` footnotes
+      - Mention checking reserved files (root index.md, log.md) and running validate_okf.py
+    expect_keywords:
+      - "generated"
+      - "sources"
+      - "log.md"

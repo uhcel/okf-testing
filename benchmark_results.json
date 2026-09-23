@@ -1,0 +1,173 @@
+[
+  {
+    "id": "Q1",
+    "title": "Database Migrations Workflow",
+    "baseline": {
+      "latency_ms": 0.2722145395819098,
+      "tokens": 1131,
+      "bytes": 5039,
+      "hops": 2,
+      "facts_found": 3,
+      "total_facts": [
+        "uv run alembic revision --autogenerate",
+        "uv run alembic upgrade head",
+        "backend/app/models.py"
+      ]
+    },
+    "okf": {
+      "latency_ms": 0.24981335853226483,
+      "tokens": 794,
+      "bytes": 3495,
+      "hops": 3,
+      "facts_found": 3,
+      "total_facts": [
+        "uv run alembic revision --autogenerate",
+        "uv run alembic upgrade head",
+        "backend/app/models.py"
+      ]
+    },
+    "token_reduction_pct": 29.79664014146773,
+    "byte_reduction_pct": 30.641000198452073,
+    "speedup": 1.0896716700069973
+  },
+  {
+    "id": "Q2",
+    "title": "Stack Topology & Local Port Mappings",
+    "baseline": {
+      "latency_ms": 0.3080488205887377,
+      "tokens": 1053,
+      "bytes": 4711,
+      "hops": 2,
+      "facts_found": 8,
+      "total_facts": [
+        "8000",
+        "5173",
+        "8025",
+        "8080",
+        "8090",
+        "mailpit",
+        "adminer",
+        "traefik"
+      ]
+    },
+    "okf": {
+      "latency_ms": 0.1806579832918942,
+      "tokens": 844,
+      "bytes": 3594,
+      "hops": 3,
+      "facts_found": 8,
+      "total_facts": [
+        "8000",
+        "5173",
+        "8025",
+        "8080",
+        "8090",
+        "mailpit",
+        "adminer",
+        "traefik"
+      ]
+    },
+    "token_reduction_pct": 19.848053181386515,
+    "byte_reduction_pct": 23.710464869454466,
+    "speedup": 1.70514922715048
+  },
+  {
+    "id": "Q3",
+    "title": "Production Deployment & TLS Configuration",
+    "baseline": {
+      "latency_ms": 0.29975175973959267,
+      "tokens": 1069,
+      "bytes": 4882,
+      "hops": 2,
+      "facts_found": 6,
+      "total_facts": [
+        "compose.deploy.yml",
+        "compose.yml",
+        "DOMAIN",
+        "FIRST_SUPERUSER",
+        "POSTGRES_PASSWORD",
+        "SECRET_KEY"
+      ]
+    },
+    "okf": {
+      "latency_ms": 0.20110503653995693,
+      "tokens": 848,
+      "bytes": 3906,
+      "hops": 3,
+      "facts_found": 6,
+      "total_facts": [
+        "compose.deploy.yml",
+        "compose.yml",
+        "DOMAIN",
+        "FIRST_SUPERUSER",
+        "POSTGRES_PASSWORD",
+        "SECRET_KEY"
+      ]
+    },
+    "token_reduction_pct": 20.67352666043031,
+    "byte_reduction_pct": 19.991806636624336,
+    "speedup": 1.490523384679309
+  },
+  {
+    "id": "Q4",
+    "title": "Frontend Build & FastAPI Static Serving",
+    "baseline": {
+      "latency_ms": 0.3362121572718024,
+      "tokens": 1053,
+      "bytes": 4711,
+      "hops": 2,
+      "facts_found": 3,
+      "total_facts": [
+        "bun run build",
+        "backend/app/frontend",
+        "8000"
+      ]
+    },
+    "okf": {
+      "latency_ms": 0.29755418305285275,
+      "tokens": 782,
+      "bytes": 3454,
+      "hops": 3,
+      "facts_found": 3,
+      "total_facts": [
+        "bun run build",
+        "backend/app/frontend",
+        "8000"
+      ]
+    },
+    "token_reduction_pct": 25.73599240265907,
+    "byte_reduction_pct": 26.682233071534707,
+    "speedup": 1.1299191085883107
+  },
+  {
+    "id": "Q5",
+    "title": "Backend Test Suite & Coverage Execution",
+    "baseline": {
+      "latency_ms": 0.19881695858202875,
+      "tokens": 2184,
+      "bytes": 9750,
+      "hops": 3,
+      "facts_found": 1,
+      "total_facts": [
+        "docker compose exec backend bash scripts/tests-start.sh",
+        "FASTAPI_ENV=development",
+        "coverage report"
+      ]
+    },
+    "okf": {
+      "latency_ms": 0.198920841794461,
+      "tokens": 793,
+      "bytes": 3516,
+      "hops": 3,
+      "facts_found": 3,
+      "total_facts": [
+        "docker compose exec backend bash scripts/tests-start.sh",
+        "FASTAPI_ENV=development",
+        "coverage report"
+      ]
+    },
+    "token_reduction_pct": 63.69047619047619,
+    "byte_reduction_pct": 63.938461538461546,
+    "speedup": 0.9994777660726993
+  }
+]
